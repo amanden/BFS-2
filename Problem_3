@@ -1,0 +1,39 @@
+// Time Complexity : O(n) where n is the number of nodes in the tree
+// Space Complexity : O(h) where h is the maximum number of nodes in any level
+// Did this code successfully run on Leetcode : Yes
+
+/*
+// Definition for Employee.
+class Employee {
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
+};
+*/
+
+class Solution {
+    public int getImportance(List<Employee> employees, int id) {
+        if(employees == null || employees.isEmpty()) return 0;
+        
+        Queue<Employee> q = new LinkedList<>();
+        Map<Integer, Employee> map = new HashMap<>();
+        for(Employee emp : employees){
+            map.put(emp.id, emp);
+            if(emp.id == id)
+                q.add(emp);
+        }
+        int sum = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Employee e = q.poll();
+                List<Integer> sub = e.subordinates;
+                sum += e.importance;
+                for(int s: sub){
+                    q.add(map.get(s));
+                }
+            }
+        }
+        return sum;
+    }
+}
